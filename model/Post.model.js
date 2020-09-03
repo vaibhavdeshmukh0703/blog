@@ -16,6 +16,7 @@ const post = dbConnection.define('post',{
     },
 },{ timestamps : false});
 
+
 post.sync()
     .then((res)=>{ console.log('Table post Created')})
     .catch((err)=>{ console.log('Table post NOt Created')})

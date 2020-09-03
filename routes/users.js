@@ -1,20 +1,28 @@
 var express = require('express');
+const jwt = require('jsonwebtoken');
 var router = express.Router();
+const authenticate = require('../authenticate/Authentication')
+require('dotenv').config();
+
 let USER = require('../model/User.model');
 
+router.get('/try',authenticate,(req,res,next)=>{
+   
+  res.json({ status : 'valid user' });
+})
 /* GET users listing. */
 router.post('/signup',async(req, res, next)=> {
     try {
       let { ...body } = req.body;
       
-      body.password = User.encryptPassword(body.password)
-      let user = await User.findOne({ where:{ email : body.email }}); 
+      body.password = USER.encryptPassword(body.password)
+      let user = await USER.findOne({ where:{ email : body.email }}); 
       if(user)
       {
         res.json({ 'message':'Vendor '+body.name+' is All ready Registered'});
       }
       else{
-        let user =  await User.create(body); 
+        let user =  await USER.create(body); 
         res.status(200).json({'message':"user registed Succesfully"});
       }
     } catch (error) {
@@ -25,10 +33,10 @@ router.post('/signup',async(req, res, next)=> {
 router.post('/signin',async(req,res,next)=>{
     try {
       let { ...body} = req.body;
-      let user = await User.findOne({ where : { email : body.email }});
+      let user = await USER.findOne({ where : { email : body.email }});
       if(user)
       {
-          if(User.validatePassword(body.password,user))
+          if(USER.validatePassword(body.password,user))
           {          
             const token = jwt.sign({ user : user.id },process.env.SECRET,{expiresIn: 900});
             let { password, ...newUser} = user.dataValues;
