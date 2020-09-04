@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
 const POST = require('../model/Post.model');
-
+const auth = require('../authenticate/Authentication');
 router.get('/getPosts', async(req,res,next) =>{
   try {
     const posts = await POST.findAll();
@@ -15,7 +15,7 @@ router.get('/getPosts', async(req,res,next) =>{
   }
 });
 
-router.post('/addPosts',async(req,res,next)=>{
+router.post('/addPosts',auth,async(req,res,next)=>{
   try {
     const {...body} = req.body;
     const post = await POST.create(body);
@@ -25,7 +25,7 @@ router.post('/addPosts',async(req,res,next)=>{
   }
 })
 
-router.get('/getPostByTitle/:title',async(req,res,next)=>{
+router.get('/getPostByTitle/:title',auth,async(req,res,next)=>{
   try {
     let {...params} = req.params;
     const post = await POST.findOne({where:{title :params.title}});
@@ -35,7 +35,7 @@ router.get('/getPostByTitle/:title',async(req,res,next)=>{
   }
 });
 
-router.put('/updatePost/:title',async(req,res,next)=>{
+router.put('/updatePost/:title',auth,async(req,res,next)=>{
   try {
       let {...body} = req.body;
       let {...params} = req.params;
@@ -46,7 +46,7 @@ router.put('/updatePost/:title',async(req,res,next)=>{
   }
 })
 
-router.delete('/deletePost/:title',async(req,res,next)=>{
+router.delete('/deletePost/:title',auth,async(req,res,next)=>{
   try {
     let {...params} = req.params;
     const post = await POST.destroy({where : params.id})

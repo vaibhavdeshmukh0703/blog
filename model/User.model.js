@@ -1,9 +1,7 @@
 const Sequelize = require('sequelize');
-const validator = require("validator");
 const bcrypt = require("bcryptjs");
-const jwt = require("jsonwebtoken");
 const dbConnection = require('../Database/dbConnection');
-const post = require('./Post.model');
+
 const user = dbConnection.define('user',{
     fullName :{
         type : Sequelize.STRING,
@@ -19,8 +17,8 @@ const user = dbConnection.define('user',{
     },
 },{ timestamps : false});
 
-user.hasMany(post,{foreignKey:'userId',targetKey:'id'});
-post.belongsTo(user);
+
+
 user.sync()
     .then((res)=>{ console.log('Table User Created')})
     .catch((err)=>{ console.log('Table User NOt Created')})
