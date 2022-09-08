@@ -19,14 +19,14 @@ router.post('/signup',async(req, res, next)=> {
       let user = await USER.findOne({ where:{ email : body.email }}); 
       if(user)
       {
-        res.json({ 'message':'Vendor '+body.name+' is All ready Registered'});
+        res.status(200).json({ 'message':'Vendor is All ready Registered'});
       }
       else{
         let user =  await USER.create(body); 
-        res.status(200).json({'message':"user registed Succesfully"});
+        res.status(201).json({'message':"user registed Succesfully"});
       }
     } catch (error) {
-      console.log('Inside Catch Block',error)
+      console.log('Error in try-catch -- >',error);
     }
   });
   

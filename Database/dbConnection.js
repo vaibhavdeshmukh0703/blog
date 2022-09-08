@@ -1,6 +1,6 @@
 const Sequelize = require('sequelize');
-const Connection_URL = 'postgres://postgres:vaibhav@123@localhost:5432/blog';
-const connection = new Sequelize(Connection_URL);
+require('dotenv').config();
+const connection = new Sequelize(process.env.CONNECTIONURL);
 
 connection
     .authenticate()

@@ -1,5 +1,6 @@
 var express = require('express');
 var router = express.Router();
+const {Op} = require('sequelize');
 const POST = require('../model/Post.model');
 const auth = require('../authenticate/Authentication');
 router.get('/getPosts', async(req,res,next) =>{
@@ -25,7 +26,7 @@ router.post('/addPosts',auth,async(req,res,next)=>{
   }
 })
 
-router.get('/getPostByTitle/:title',auth,async(req,res,next)=>{
+router.get('/getPostByTitle/:title',async(req,res,next)=>{
   try {
     let {...params} = req.params;
     const post = await POST.findOne({where:{title :params.title}});
